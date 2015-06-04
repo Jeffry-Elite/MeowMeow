@@ -14,7 +14,7 @@ import org.json.JSONException;
 /**
  * Created by ${Jeffry} on 03-Jun-15.
  */
-public class ImageDetail extends Activity {
+public class ImageDetail extends Activity implements ImageDetailAdapter.ListenerButtonClick {
     String url;
     private ViewPager viewPager;
     private ImageDetailAdapter imageAdapter;
@@ -35,8 +35,25 @@ public class ImageDetail extends Activity {
             e.printStackTrace();
         }
         viewPager = (ViewPager)findViewById(R.id.image_detail_pager);
-        imageAdapter = new ImageDetailAdapter(this,jsArr);
+        imageAdapter = new ImageDetailAdapter(this,jsArr,this);
         viewPager.setAdapter(imageAdapter);
         viewPager.setCurrentItem(position);
+    }
+
+    @Override
+    public void onButtonBackClick() {
+        if(viewPager.getCurrentItem() == 0)
+            viewPager.setCurrentItem(imageAdapter.getCount()-1);
+        else
+            viewPager.setCurrentItem(viewPager.getCurrentItem()-1);
+
+    }
+
+    @Override
+    public void onButtonNextClick() {
+        if(viewPager.getCurrentItem() == imageAdapter.getCount()-1)
+            viewPager.setCurrentItem(0);
+        else
+            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
     }
 }

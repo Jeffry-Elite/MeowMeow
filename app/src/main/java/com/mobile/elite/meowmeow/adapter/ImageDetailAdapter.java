@@ -5,6 +5,8 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -22,15 +24,17 @@ public class ImageDetailAdapter extends PagerAdapter {
     private JSONArray jsData = new JSONArray();
     private ViewHolder viewHolder = new ViewHolder();
     private Context context;
+    private ListenerButtonClick listener;
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-       container.removeView((LinearLayout)object);
+       container.removeView((FrameLayout)object);
     }
 
-    public ImageDetailAdapter(Context context,JSONArray jsData) {
+    public ImageDetailAdapter(Context context,JSONArray jsData,ListenerButtonClick listener) {
         this.jsData = jsData;
         this.context = context;
+        this.listener = listener;
     }
 
     @Override
@@ -48,6 +52,23 @@ public class ImageDetailAdapter extends PagerAdapter {
         View convertView = inflater.inflate(R.layout.image_detail_activity, null);
         viewHolder = new ViewHolder();
         viewHolder.imageView = (ImageView)convertView.findViewById(R.id.image_detail);
+        viewHolder.buttonNext = (ImageButton)convertView.findViewById(R.id.button_next);
+        viewHolder.buttonBack = (ImageButton)convertView.findViewById(R.id.button_back);
+
+        viewHolder.buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onButtonBackClick();
+
+            }
+        });
+
+        viewHolder.buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onButtonNextClick();
+            }
+        });
         String url = null;
         try {
             url = jsData.getJSONObject(position).getString("actual_url");
@@ -66,5 +87,12 @@ public class ImageDetailAdapter extends PagerAdapter {
 
     private static class ViewHolder{
         ImageView imageView;
+        ImageButton buttonBack;
+        ImageButton buttonNext;
+    }
+
+    public interface ListenerButtonClick{
+        public void onButtonBackClick();
+        public void onButtonNextClick();
     }
 }
