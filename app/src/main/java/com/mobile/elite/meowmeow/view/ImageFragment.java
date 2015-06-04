@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.kidzie.jeff.restclientmanager.Logging;
@@ -51,6 +52,7 @@ public class ImageFragment extends Fragment implements ListImageAdapter.ImageCli
         listImageAdapter = new ListImageAdapter(getActivity(), new JSONArray(), this);
         listView.setAdapter(listImageAdapter);
         requestImageAPI();
+
     }
 
     /**
