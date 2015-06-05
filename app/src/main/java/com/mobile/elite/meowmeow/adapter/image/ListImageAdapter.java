@@ -1,4 +1,4 @@
-package com.mobile.elite.meowmeow.adapter;
+package com.mobile.elite.meowmeow.adapter.image;
 
 import android.content.Context;
 import android.view.LayoutInflater;

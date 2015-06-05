@@ -24,6 +24,7 @@ public class CustomVideoView extends VideoView {
         super(context);
     }
 
+    //Set video height and width
     public void setDimensionVideo(int height, int width){
         this.height = height;
         this.width = width;

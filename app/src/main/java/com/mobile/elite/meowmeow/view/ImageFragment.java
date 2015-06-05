@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.kidzie.jeff.restclientmanager.Logging;
@@ -16,7 +15,7 @@ import com.kidzie.jeff.restclientmanager.task.TaskConnection;
 import com.mobile.elite.meowmeow.Config;
 import com.mobile.elite.meowmeow.ImageDetail;
 import com.mobile.elite.meowmeow.R;
-import com.mobile.elite.meowmeow.adapter.ListImageAdapter;
+import com.mobile.elite.meowmeow.adapter.image.ListImageAdapter;
 import com.mobile.elite.meowmeow.listener.ImageClickListener;
 
 import org.json.JSONArray;

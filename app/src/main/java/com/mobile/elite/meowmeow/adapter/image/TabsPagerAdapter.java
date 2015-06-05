@@ -1,4 +1,4 @@
-package com.mobile.elite.meowmeow.adapter;
+package com.mobile.elite.meowmeow.adapter.image;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

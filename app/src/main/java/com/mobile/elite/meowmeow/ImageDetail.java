@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.mobile.elite.meowmeow.adapter.ImageDetailAdapter;
+import com.mobile.elite.meowmeow.adapter.image.ImageDetailAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

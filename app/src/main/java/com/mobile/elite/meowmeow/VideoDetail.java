@@ -47,10 +47,12 @@ public class VideoDetail extends Activity {
         String videoUrl= "";
         int posistion = 0;
         try {
-             jsData = new JSONArray(getIntent().getStringExtra("data"));
-            posistion = getIntent().getIntExtra("position",0);
-            videoUrl = jsData.getJSONObject(posistion).getString("actual_content");
+            // Get data from main menu in video tab
+             jsData = new JSONArray(getIntent().getStringExtra("data")); // get all for video
+            posistion = getIntent().getIntExtra("position",0); // Get data for current video in index of the array
+            videoUrl = jsData.getJSONObject(posistion).getString("actual_content"); // Get URL for video
 
+            // Create media controller for video
             MediaController mediacontroller = new MediaController(this);
             mediacontroller.setAnchorView(videoView);
 
@@ -63,6 +65,7 @@ public class VideoDetail extends Activity {
             e.printStackTrace();
         }
         videoView.requestFocus();
+
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
             public void onPrepared(MediaPlayer mp) {
