@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.mobile.elite.meowmeow.R;
+import com.mobile.elite.meowmeow.listener.ImageClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -97,7 +98,4 @@ public class ListImageAdapter extends BaseAdapter {
         ImageView imageHolder;
     }
 
-    public interface ImageClickListener{
-        public void onImageClick(JSONObject jsData,JSONArray jsArray, int position);
-    }
 }

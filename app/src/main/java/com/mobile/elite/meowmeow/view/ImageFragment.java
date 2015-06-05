@@ -17,6 +17,7 @@ import com.mobile.elite.meowmeow.Config;
 import com.mobile.elite.meowmeow.ImageDetail;
 import com.mobile.elite.meowmeow.R;
 import com.mobile.elite.meowmeow.adapter.ListImageAdapter;
+import com.mobile.elite.meowmeow.listener.ImageClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +26,7 @@ import org.json.JSONObject;
 /**
  * Created by Jeffry on 03-Jun-15.
  */
-public class ImageFragment extends Fragment implements ListImageAdapter.ImageClickListener, TaskConnection.TaskConnectionListener {
+public class ImageFragment extends Fragment implements ImageClickListener, TaskConnection.TaskConnectionListener {
 
     private  ListView listView;
     private  ListImageAdapter listImageAdapter;

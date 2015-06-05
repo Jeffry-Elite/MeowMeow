@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.mobile.elite.meowmeow.R;
+import com.mobile.elite.meowmeow.listener.ImageClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,10 +21,12 @@ public class GridVideoAdapter extends BaseAdapter {
 
     private JSONArray jsData;
     private Context context;
+    private ImageClickListener listener;
 
-    public GridVideoAdapter(Context context, JSONArray jsData) {
+    public GridVideoAdapter(Context context, JSONArray jsData,ImageClickListener listener) {
         this.context = context;
         this.jsData = jsData;
+        this.listener = listener;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class GridVideoAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -68,6 +71,18 @@ public class GridVideoAdapter extends BaseAdapter {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        viewHolder.imageHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if(listener != null)
+                    listener.onImageClick(jsData.getJSONObject(position),jsData, position);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         Glide.with(context).load(url).fitCenter().into(viewHolder.imageHolder);
 
