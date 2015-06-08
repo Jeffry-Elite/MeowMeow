@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="global_background">#efeded</color>
+    <color name="header_background">#272427</color>
+    <color name="tab_background">#4f4c4f</color>
+    <color name="tab_pointer">#ffffff</color>
+    <color name="font_color">#ffffff</color>
+    <color name="text_shadow_background">#383738</color>
+    <color name="shadow_background">#a09fa0</color>
+</resources>
