@@ -32,10 +32,14 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
     private MediaPlayer player;
     private SurfaceView videoSurface;
     private VideoControllerView controller;
+    private JSONArray jsData;
 
     private int mPosition;
     private int NEXT_TAG = 1;
     private int BACK_TAG = 2;
+
+    private String url_thumb_1;
+    private String url_thumb_2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,17 +56,22 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         videoHolder.addCallback(this);
         player = new MediaPlayer();
         controller = new VideoControllerView(this);
+        try {
+            jsData = new JSONArray(getIntent().getStringExtra("data")); // get all for video
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
 
     private void loadVideo(int position) {
         player.setOnCompletionListener(this);
-        JSONArray jsData;
+
         String videoUrl= "";
         try {
             // Get data from main menu in video tab
-            jsData = new JSONArray(getIntent().getStringExtra("data")); // get all for video
+
             // Get data for current video in index of the array
             videoUrl = jsData.getJSONObject(position).getString("actual_content"); // Get URL for video
 
@@ -98,6 +107,12 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
     public void onPrepared(MediaPlayer mp) {
         controller.setMediaPlayer(this);
         controller.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
+        int position_thumb_1;
+        int position_thumb_2;
+        position_thumb_1 = mPosition == jsData.length()-1 ? 0 : mPosition + 1;
+        position_thumb_2 = position_thumb_1 == jsData.length() - 1 ? 0 : position_thumb_1 + 1;
+        controller.setThumbnail_1(getUrlThumb(position_thumb_1));
+        controller.setThumbnail_2(getUrlThumb(position_thumb_2));
         player.start();
 
     }
@@ -170,14 +185,22 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
     @Override
     public void next() {
-        mPosition++;
+        if(mPosition == jsData.length() - 1)
+            mPosition = 0;
+        else
+            mPosition++;
+
         player.reset();
 
     }
 
     @Override
     public void back() {
-        mPosition--;
+        if(mPosition == 0)
+            mPosition = jsData.length() - 1;
+        else
+            mPosition--;
+
         player.reset();
 
     }
@@ -186,5 +209,15 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
     public void onCompletion(MediaPlayer mp) {
         loadVideo(mPosition);
 
+    }
+
+    private String getUrlThumb(int position){
+        String url_thumb = "";
+        try {
+            url_thumb = jsData.getJSONObject(position).getString("thumb");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return url_thumb;
     }
 }

@@ -31,11 +31,13 @@ package com.mobile.elite.meowmeow.view;
         import android.view.accessibility.AccessibilityNodeInfo;
         import android.widget.FrameLayout;
         import android.widget.ImageButton;
+        import android.widget.ImageView;
         import android.widget.ProgressBar;
         import android.widget.SeekBar;
         import android.widget.SeekBar.OnSeekBarChangeListener;
         import android.widget.TextView;
 
+        import com.bumptech.glide.Glide;
         import com.mobile.elite.meowmeow.R;
 
         import java.lang.ref.WeakReference;
@@ -96,6 +98,8 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
     private ImageButton         mNextButton;
     private ImageButton         mPrevButton;
     private ImageButton         mFullscreenButton;
+    private ImageView           thumbnail_1;
+    private ImageView           thumbnail_2;
     private Handler             mHandler = new MessageHandler(this);
 
     private static final String BACK_TAG = "back";
@@ -216,6 +220,8 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
 //            mPrevButton.setVisibility(View.GONE);
 //        }
 
+        thumbnail_1 = (ImageView)v.findViewById(R.id.thumbnail_1);
+        thumbnail_2 = (ImageView)v.findViewById(R.id.thumbnail_2);
         mProgress = (SeekBar) v.findViewById(R.id.mediacontroller_progress);
         if (mProgress != null) {
             if (mProgress instanceof SeekBar) {
@@ -693,5 +699,13 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
                     break;
             }
         }
+    }
+
+    public void setThumbnail_1(String url){
+        Glide.with(mContext).load(url).centerCrop().into(thumbnail_1);
+    }
+
+    public void setThumbnail_2(String url){
+        Glide.with(mContext).load(url).centerCrop().into(thumbnail_2);
     }
 }
