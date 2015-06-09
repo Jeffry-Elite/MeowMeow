@@ -70,7 +70,7 @@ package com.mobile.elite.meowmeow.view;
  *   with the boolean set to false
  * </ul>
  */
-public class VideoControllerView extends FrameLayout {
+public class VideoControllerView extends FrameLayout implements View.OnClickListener {
     private static final String TAG = "VideoControllerView";
 
     private MediaPlayerControl  mPlayer;
@@ -97,6 +97,12 @@ public class VideoControllerView extends FrameLayout {
     private ImageButton         mPrevButton;
     private ImageButton         mFullscreenButton;
     private Handler             mHandler = new MessageHandler(this);
+
+    private static final String BACK_TAG = "back";
+    private static final String NEXT_TAG = "next";
+
+    private ImageButton btnNext;
+    private ImageButton btnBack;
 
     public VideoControllerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -197,14 +203,18 @@ public class VideoControllerView extends FrameLayout {
         }
 
         // By default these are hidden. They will be enabled when setPrevNextListeners() is called
-        mNextButton = (ImageButton) v.findViewById(R.id.next);
-        if (mNextButton != null && !mFromXml && !mListenersSet) {
-            mNextButton.setVisibility(View.GONE);
-        }
-        mPrevButton = (ImageButton) v.findViewById(R.id.prev);
-        if (mPrevButton != null && !mFromXml && !mListenersSet) {
-            mPrevButton.setVisibility(View.GONE);
-        }
+        mNextButton = (ImageButton) v.findViewById(R.id.btn_next);
+        mNextButton.setTag(NEXT_TAG);
+        mNextButton.setOnClickListener(this);
+//        if (mNextButton != null && !mFromXml && !mListenersSet) {
+//            mNextButton.setVisibility(View.GONE);
+//        }
+        mPrevButton = (ImageButton) v.findViewById(R.id.btn_back);
+        mPrevButton.setTag(BACK_TAG);
+        mPrevButton.setOnClickListener(this);
+//        if (mPrevButton != null && !mFromXml && !mListenersSet) {
+//            mPrevButton.setVisibility(View.GONE);
+//        }
 
         mProgress = (SeekBar) v.findViewById(R.id.mediacontroller_progress);
         if (mProgress != null) {
@@ -220,7 +230,7 @@ public class VideoControllerView extends FrameLayout {
         mFormatBuilder = new StringBuilder();
         mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
 
-        installPrevNextListeners();
+//        installPrevNextListeners();
     }
 
     /**
@@ -547,12 +557,12 @@ public class VideoControllerView extends FrameLayout {
         if (mRewButton != null) {
             mRewButton.setEnabled(enabled);
         }
-        if (mNextButton != null) {
-            mNextButton.setEnabled(enabled && mNextListener != null);
-        }
-        if (mPrevButton != null) {
-            mPrevButton.setEnabled(enabled && mPrevListener != null);
-        }
+//        if (mNextButton != null) {
+//            mNextButton.setEnabled(enabled && mNextListener != null);
+//        }
+//        if (mPrevButton != null) {
+//            mPrevButton.setEnabled(enabled && mPrevListener != null);
+//        }
         if (mProgress != null) {
             mProgress.setEnabled(enabled);
         }
@@ -602,33 +612,41 @@ public class VideoControllerView extends FrameLayout {
         }
     };
 
-    private void installPrevNextListeners() {
-        if (mNextButton != null) {
-            mNextButton.setOnClickListener(mNextListener);
-            mNextButton.setEnabled(mNextListener != null);
-        }
+//    private void installPrevNextListeners() {
+//        if (mNextButton != null) {
+//            mNextButton.setOnClickListener(mNextListener);
+//            mNextButton.setEnabled(mNextListener != null);
+//        }
+//
+//        if (mPrevButton != null) {
+//            mPrevButton.setOnClickListener(mPrevListener);
+//            mPrevButton.setEnabled(mPrevListener != null);
+//        }
+//    }
 
-        if (mPrevButton != null) {
-            mPrevButton.setOnClickListener(mPrevListener);
-            mPrevButton.setEnabled(mPrevListener != null);
-        }
-    }
+//    public void setPrevNextListeners(View.OnClickListener next, View.OnClickListener prev) {
+//        mNextListener = next;
+//        mPrevListener = prev;
+//        mListenersSet = true;
+//
+//        if (mRoot != null) {
+//            installPrevNextListeners();
+//
+//            if (mNextButton != null && !mFromXml) {
+//                mNextButton.setVisibility(View.VISIBLE);
+//            }
+//            if (mPrevButton != null && !mFromXml) {
+//                mPrevButton.setVisibility(View.VISIBLE);
+//            }
+//        }
+//    }
 
-    public void setPrevNextListeners(View.OnClickListener next, View.OnClickListener prev) {
-        mNextListener = next;
-        mPrevListener = prev;
-        mListenersSet = true;
-
-        if (mRoot != null) {
-            installPrevNextListeners();
-
-            if (mNextButton != null && !mFromXml) {
-                mNextButton.setVisibility(View.VISIBLE);
-            }
-            if (mPrevButton != null && !mFromXml) {
-                mPrevButton.setVisibility(View.VISIBLE);
-            }
-        }
+    @Override
+    public void onClick(View v) {
+        if (v.getTag().equals(BACK_TAG))
+            mPlayer.back();
+        else if (v.getTag().equals(NEXT_TAG))
+            mPlayer.next();
     }
 
     public interface MediaPlayerControl {
@@ -644,6 +662,8 @@ public class VideoControllerView extends FrameLayout {
         boolean canSeekForward();
         boolean isFullScreen();
         void    toggleFullScreen();
+        void    next();
+        void    back();
     }
 
     private static class MessageHandler extends Handler {

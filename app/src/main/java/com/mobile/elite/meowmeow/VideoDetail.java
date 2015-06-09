@@ -11,7 +11,9 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.MediaController;
 
 import com.mobile.elite.meowmeow.view.CustomVideoView;
@@ -23,18 +25,23 @@ import org.json.JSONException;
 /**
  * Created by Jeffry on 04-Jun-15.
  */
-public class VideoDetail extends Activity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,VideoControllerView.MediaPlayerControl {
+public class VideoDetail extends Activity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,VideoControllerView.MediaPlayerControl, MediaPlayer.OnCompletionListener {
 
     private CustomVideoView videoView;
     private ProgressDialog progressDialog;
     private MediaPlayer player;
     private SurfaceView videoSurface;
     private VideoControllerView controller;
+
+    private int mPosition;
+    private int NEXT_TAG = 1;
+    private int BACK_TAG = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        loadVideo();
+        mPosition  = getIntent().getIntExtra("position",0);
+        loadVideo(mPosition);
     }
 
     private void initView() {
@@ -43,37 +50,24 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         videoSurface = (SurfaceView) findViewById(R.id.videoSurface);
         SurfaceHolder videoHolder = videoSurface.getHolder();
         videoHolder.addCallback(this);
-
         player = new MediaPlayer();
         controller = new VideoControllerView(this);
 
-//        videoView = (CustomVideoView)findViewById(R.id.video_view);
-//        progressDialog = new ProgressDialog(this);
-//        progressDialog.setIndeterminate(false);
-//        progressDialog.setCancelable(false);
-//
-//        DisplayMetrics displaymetrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//        int height = displaymetrics.heightPixels;
-//        int width = displaymetrics.widthPixels;
-//        videoView.setDimensionVideo(height, width);
-//        videoView.getHolder().setFixedSize(height, width);
     }
 
 
-    private void loadVideo() {
-
-
+    private void loadVideo(int position) {
+        player.setOnCompletionListener(this);
         JSONArray jsData;
         String videoUrl= "";
-        int position = 0;
         try {
             // Get data from main menu in video tab
-             jsData = new JSONArray(getIntent().getStringExtra("data")); // get all for video
-            position = getIntent().getIntExtra("position",0); // Get data for current video in index of the array
+            jsData = new JSONArray(getIntent().getStringExtra("data")); // get all for video
+            // Get data for current video in index of the array
             videoUrl = jsData.getJSONObject(position).getString("actual_content"); // Get URL for video
 
             player.setDataSource(this, Uri.parse(videoUrl));
+            player.prepareAsync();
             player.setOnPreparedListener(this);
 
         } catch (JSONException e) {
@@ -81,22 +75,13 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         } catch (Exception e){
             e.printStackTrace();
         }
-//        videoView.requestFocus();
-//
-//        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//
-//            public void onPrepared(MediaPlayer mp) {
-//                progressDialog.dismiss();
-//                videoView.start();
-//            }
-//        });
 
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         player.setDisplay(holder);
-        player.prepareAsync();
+
     }
 
     @Override
@@ -180,6 +165,26 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
     @Override
     public void toggleFullScreen() {
+
+    }
+
+    @Override
+    public void next() {
+        mPosition++;
+        player.reset();
+
+    }
+
+    @Override
+    public void back() {
+        mPosition--;
+        player.reset();
+
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        loadVideo(mPosition);
 
     }
 }

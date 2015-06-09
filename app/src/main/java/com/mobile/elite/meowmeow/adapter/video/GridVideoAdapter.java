@@ -2,6 +2,7 @@ package com.mobile.elite.meowmeow.adapter.video;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -62,12 +63,16 @@ public class GridVideoAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
+        final Typeface typeface;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.video_item_grid, null);
             viewHolder = new ViewHolder();
             viewHolder.imageHolder = (ImageView)convertView.findViewById(R.id.image_video);
             viewHolder.textHolder = (TextView)convertView.findViewById(R.id.txt_title_video);
+            typeface = Typeface.createFromAsset(context.getAssets(),"fonts/arial.ttf");
+            viewHolder.textHolder.setTypeface(typeface);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder)convertView.getTag();

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
     private TextView txtVideoTitle;
     private TextView txtImageTitle;
     private Typeface arialType;
+    private Typeface arialBold;
     private View pointerVideo;
     private View pointerImage;
     private int VIDEO_TAG = 0;
@@ -41,7 +43,18 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
         txtImageTitle = (TextView)findViewById(R.id.picture_title_tab);
         viewPager.setAdapter(tabAdapter);
         viewPager.addOnPageChangeListener(this);
-        arialType = Typeface.createFromAsset(getAssets(),"fonts/arial_bold.ttf");
+
+        actionBar = getSupportActionBar();
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View customActionBar = inflater.inflate(R.layout.custom_action_bar,null);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setCustomView(customActionBar);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        arialType = Typeface.createFromAsset(getAssets(),"fonts/arial.ttf");
+        arialBold = Typeface.createFromAsset(getAssets(),"fonts/arial_bold.ttf");
+
         txtVideoTitle.setTypeface(arialType);
         txtImageTitle.setTypeface(arialType);
         pointerVideo = (View)findViewById(R.id.pointer_video);
@@ -80,11 +93,15 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
             case 0: {
                 pointerVideo.setVisibility(View.VISIBLE);
                 pointerImage.setVisibility(View.INVISIBLE);
+                txtVideoTitle.setTypeface(arialBold);
+                txtImageTitle.setTypeface(arialType);
             }
             break;
             case 1: {
                 pointerVideo.setVisibility(View.INVISIBLE);
                 pointerImage.setVisibility(View.VISIBLE);
+                txtVideoTitle.setTypeface(arialType);
+                txtImageTitle.setTypeface(arialBold);
             }
             break;
         }

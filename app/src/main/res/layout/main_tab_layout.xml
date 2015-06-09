@@ -18,14 +18,15 @@
             android:padding="5dp"
             android:text="@string/video_tab_title"
             android:gravity="center"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:textColor="@android:color/white"/>
         <View
             android:id="@+id/pointer_video"
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="3dp"
             android:background="@android:color/white"
-            android:layout_marginBottom="2dp"/>
+            android:layout_marginBottom="1dp"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout
@@ -40,16 +41,16 @@
             android:layout_weight="1"
             android:textSize="14sp"
             android:padding="5dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:gravity="center"
             android:text="@string/picture_tab_title"
             android:textColor="@android:color/white"/>
         <View
             android:id="@+id/pointer_picture"
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="3dp"
             android:background="@android:color/white"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="1dp"
             android:visibility="invisible"/>
     </LinearLayout>
 
