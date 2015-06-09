@@ -93,15 +93,11 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
             case 0: {
                 pointerVideo.setVisibility(View.VISIBLE);
                 pointerImage.setVisibility(View.INVISIBLE);
-                txtVideoTitle.setTypeface(arialBold);
-                txtImageTitle.setTypeface(arialType);
             }
             break;
             case 1: {
                 pointerVideo.setVisibility(View.INVISIBLE);
                 pointerImage.setVisibility(View.VISIBLE);
-                txtVideoTitle.setTypeface(arialType);
-                txtImageTitle.setTypeface(arialBold);
             }
             break;
         }
