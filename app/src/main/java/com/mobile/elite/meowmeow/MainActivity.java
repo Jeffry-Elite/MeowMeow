@@ -57,8 +57,8 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
 
         txtVideoTitle.setTypeface(arialType);
         txtImageTitle.setTypeface(arialType);
-        pointerVideo = (View)findViewById(R.id.pointer_video);
-        pointerImage = (View)findViewById(R.id.pointer_picture);
+        pointerVideo = findViewById(R.id.pointer_video);
+        pointerImage = findViewById(R.id.pointer_picture);
 
         txtVideoTitle.setOnClickListener(this);
         txtImageTitle.setOnClickListener(this);
