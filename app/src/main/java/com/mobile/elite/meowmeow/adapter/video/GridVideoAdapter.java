@@ -21,6 +21,10 @@ import com.mobile.elite.meowmeow.listener.ImageClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jeffry on 04-Jun-15.
@@ -30,6 +34,7 @@ public class GridVideoAdapter extends BaseAdapter {
     private JSONArray jsData;
     private Context context;
     private ImageClickListener listener;
+    private List<JSONObject> list = new ArrayList<JSONObject>();
 
     public GridVideoAdapter(Context context, JSONArray jsData,ImageClickListener listener) {
         this.context = context;
@@ -39,7 +44,7 @@ public class GridVideoAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return jsData.length();
+        return list.size();
     }
 
     @Override
@@ -53,11 +58,18 @@ public class GridVideoAdapter extends BaseAdapter {
     }
 
     public  void clear(){
-        jsData = null;
+        jsData = new JSONArray();
+        list = new ArrayList<JSONObject>();
     }
 
     public void add(JSONArray jsData){
-        this.jsData = jsData;
+        for(int i = 0 ; i < jsData.length() ; i++){
+            try {
+                list.add(jsData.getJSONObject(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -81,8 +93,8 @@ public class GridVideoAdapter extends BaseAdapter {
         String url = "";
         String title = "";
         try {
-            url = jsData.getJSONObject(position).getString("160x120");
-            title = jsData.getJSONObject(position).getString("title");
+            url = list.get(position).getString("160x120");
+            title = list.get(position).getString("title");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -92,11 +104,9 @@ public class GridVideoAdapter extends BaseAdapter {
         viewHolder.imageHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    if (listener != null)
-                        listener.onImageClick(jsData.getJSONObject(position), jsData, position);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (listener != null) {
+                    JSONArray jsArray = convertListToJsonArray(list);
+                    listener.onImageClick(list.get(position), jsArray, position);
                 }
             }
         });
@@ -111,6 +121,19 @@ public class GridVideoAdapter extends BaseAdapter {
                 });
 
         return convertView;
+    }
+
+    private JSONArray convertListToJsonArray(List<JSONObject> list) {
+        JSONArray jsArray = new JSONArray();
+        for(int i =0 ; i < list.size() ; i++){
+            JSONObject jsObject = list.get(i);
+            try {
+                jsArray.put(i,jsObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return jsArray;
     }
 
     private class ViewHolder{

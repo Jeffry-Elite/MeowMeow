@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.GridView;
 
+import com.kidzie.jeff.restclientmanager.Logging;
 import com.kidzie.jeff.restclientmanager.task.TaskConnection;
 import com.mobile.elite.meowmeow.Config;
 import com.mobile.elite.meowmeow.R;
@@ -22,10 +24,13 @@ import org.json.JSONObject;
 /**
  * Created by Jeffry on 03-Jun-15.
  */
-public class VideoFragment extends Fragment implements TaskConnection.TaskConnectionListener,ImageClickListener {
+public class VideoFragment extends Fragment implements TaskConnection.TaskConnectionListener,ImageClickListener, AbsListView.OnScrollListener {
 
     private GridView gridView;
     private GridVideoAdapter gridAdapter;
+    private boolean isLoadMore = true;
+    private  int mPage = 0;
+    private  int limit = 20;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,12 +46,13 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
         gridView = (GridView)getActivity().findViewById(R.id.grid_image);
         gridAdapter = new GridVideoAdapter(getActivity(), new JSONArray(),this);
         gridView.setAdapter(gridAdapter);
+        gridView.setOnScrollListener(this);
         requestVideoApi();
     }
 
     private void requestVideoApi() {
         TaskConnection taskConnection = new TaskConnection(getActivity());
-        taskConnection.setUrl(Config.videoUrl);
+        taskConnection.setUrl(Config.videoUrl.replace("{page}","" +mPage));
         taskConnection.setRequest("");
         taskConnection.setTaskConnectionListener(this);
         taskConnection.executeRequest();
@@ -64,9 +70,13 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
 
     @Override
     public void onTaskRequestSuccess(Object tag, JSONObject response) {
-        gridAdapter.clear();
         try {
+            if(response.getJSONArray("data").length() != 0)
             gridAdapter.add(response.getJSONArray("data"));
+            else {
+                isLoadMore = false;
+                return;
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -84,5 +94,24 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
         intent.putExtra("data",jsArray.toString());
         intent.putExtra("position", position);
         getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(isLoadMore){
+                    Logging.setLog(Logging.LOGTYPE.debug,"scroll","firstItem=" + firstVisibleItem,null);
+                    Logging.setLog(Logging.LOGTYPE.debug,"scroll","visibleItem=" + visibleItemCount,null);
+                    Logging.setLog(Logging.LOGTYPE.debug,"scroll","totalItemCount=" + totalItemCount,null);
+                    if(((mPage +1) * limit) - visibleItemCount < visibleItemCount + firstVisibleItem ){
+
+                        mPage++;
+                        requestVideoApi();
+                    }
+                }
     }
 }

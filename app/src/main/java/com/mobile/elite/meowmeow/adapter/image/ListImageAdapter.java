@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class ListImageAdapter extends BaseAdapter {
     private Context context ;
     private JSONArray jsArray;
     private ImageClickListener listener;
+    private ArrayList<JSONObject> list = new ArrayList<JSONObject>();
 
     public ListImageAdapter(Context context, JSONArray jsArray, ImageClickListener listener) {
         super();
@@ -37,7 +39,7 @@ public class ListImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return jsArray.length();
+        return list.size();
     }
 
     @Override
@@ -51,11 +53,17 @@ public class ListImageAdapter extends BaseAdapter {
     }
 
     public void clear(){
-        this.jsArray = null;
+
+       list = new ArrayList<JSONObject>();
     }
 
     public void add(JSONArray jsArray){
-        this.jsArray = jsArray;
+        for (int i = 0 ; i < jsArray.length() ; i++)
+            try {
+                list.add(jsArray.getJSONObject(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
     }
 
     @Override
@@ -74,7 +82,7 @@ public class ListImageAdapter extends BaseAdapter {
          JSONObject jsData;
         try {
 
-            url = jsArray.getJSONObject(position).getString("actual_url");
+            url = list.get(position).getString("actual_url");
         } catch (JSONException e) {
             url = "";
 
@@ -82,15 +90,24 @@ public class ListImageAdapter extends BaseAdapter {
         viewHolder.imageHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    listener.onImageClick(jsArray.getJSONObject(position),jsArray,position);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                listener.onImageClick(list.get(position),convertListToJsonArray(list),position);
             }
         });
         Glide.with(context).load(url).centerCrop().into(viewHolder.imageHolder);
         return convertView;
+    }
+
+    private JSONArray convertListToJsonArray(List<JSONObject> list) {
+        JSONArray jsArray = new JSONArray();
+        for(int i =0 ; i < list.size() ; i++){
+            JSONObject jsObject = list.get(i);
+            try {
+                jsArray.put(i,jsObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return jsArray;
     }
 
 
