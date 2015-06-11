@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.mobile.elite.meowmeow.R;
 import com.mobile.elite.meowmeow.listener.ImageClickListener;
+import com.mobile.elite.meowmeow.parser.ImageDataParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,12 +29,14 @@ public class ListImageAdapter extends BaseAdapter {
     private JSONArray jsArray;
     private ImageClickListener listener;
     private ArrayList<JSONObject> list = new ArrayList<JSONObject>();
+    private ImageDataParser dataParser;
 
     public ListImageAdapter(Context context, JSONArray jsArray, ImageClickListener listener) {
         super();
         this.context = context;
         this.jsArray = jsArray;
         this.listener = listener;
+        dataParser = new ImageDataParser();
     }
 
 
@@ -78,19 +81,12 @@ public class ListImageAdapter extends BaseAdapter {
         } else {
            viewHolder = (ViewHolder)convertView.getTag();
         }
-        String url = null;
-         JSONObject jsData;
-        try {
-
-            url = list.get(position).getString("actual_url");
-        } catch (JSONException e) {
-            url = "";
-
-        }
+       dataParser.setJsData(list.get(position));
+       String url = dataParser.getUrl();
         viewHolder.imageHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onImageClick(list.get(position),convertListToJsonArray(list),position);
+                listener.onImageClick(dataParser.getJsData(),convertListToJsonArray(list),position);
             }
         });
         Glide.with(context).load(url).centerCrop().into(viewHolder.imageHolder);

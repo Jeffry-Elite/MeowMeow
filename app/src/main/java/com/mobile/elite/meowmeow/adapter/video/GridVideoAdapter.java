@@ -18,6 +18,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.mobile.elite.meowmeow.R;
 import com.mobile.elite.meowmeow.listener.ImageClickListener;
+import com.mobile.elite.meowmeow.parser.VideoDataParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,11 +36,13 @@ public class GridVideoAdapter extends BaseAdapter {
     private Context context;
     private ImageClickListener listener;
     private List<JSONObject> list = new ArrayList<JSONObject>();
+    private VideoDataParser dataParser;
 
     public GridVideoAdapter(Context context, JSONArray jsData,ImageClickListener listener) {
         this.context = context;
         this.jsData = jsData;
         this.listener = listener;
+        dataParser = new VideoDataParser();
     }
 
     @Override
@@ -89,15 +92,9 @@ public class GridVideoAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
-
-        String url = "";
-        String title = "";
-        try {
-            url = list.get(position).getString("160x120");
-            title = list.get(position).getString("title");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        dataParser.setJsData(list.get(position));
+        String url = dataParser.getUrlImageVideo();
+        String title = dataParser.getVideoTitle();
 
         viewHolder.textHolder.setText(title);
 
@@ -106,7 +103,7 @@ public class GridVideoAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if (listener != null) {
                     JSONArray jsArray = convertListToJsonArray(list);
-                    listener.onImageClick(list.get(position), jsArray, position);
+                    listener.onImageClick(dataParser.getJsData(), jsArray, position);
                 }
             }
         });

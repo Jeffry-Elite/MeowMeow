@@ -18,6 +18,7 @@ import android.widget.MediaController;
 
 import com.kidzie.jeff.restclientmanager.Logging;
 import com.mobile.elite.meowmeow.R;
+import com.mobile.elite.meowmeow.parser.VideoDataParser;
 import com.mobile.elite.meowmeow.view.CustomVideoView;
 import com.mobile.elite.meowmeow.view.VideoControllerView;
 
@@ -35,6 +36,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
     private SurfaceView videoSurface;
     private VideoControllerView controller;
     private JSONArray jsData;
+    private VideoDataParser dataParser;
 
     private int mPosition;
     private int NEXT_TAG = 1;
@@ -52,7 +54,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
     private void initView() {
         setContentView(R.layout.video_detail);
-
+        dataParser = new VideoDataParser();
         videoSurface = (SurfaceView) findViewById(R.id.videoSurface);
         SurfaceHolder videoHolder = videoSurface.getHolder();
         videoHolder.addCallback(this);
@@ -75,7 +77,8 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
             // Get data from main menu in video tab
 
             // Get data for current video in index of the array
-            videoUrl = jsData.getJSONObject(position).getString("actual_content"); // Get URL for video
+            dataParser.setJsData(jsData.getJSONObject(position));
+            videoUrl = dataParser.getUrlVideo(); // Get URL for video
 
             player.setDataSource(this, Uri.parse(videoUrl));
             player.prepareAsync();
