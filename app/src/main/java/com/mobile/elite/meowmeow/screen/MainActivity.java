@@ -1,4 +1,4 @@
-package com.mobile.elite.meowmeow;
+package com.mobile.elite.meowmeow.screen;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -6,12 +6,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.mobile.elite.meowmeow.adapter.image.TabsPagerAdapter;
+import com.mobile.elite.meowmeow.R;
+import com.mobile.elite.meowmeow.adapter.TabsPagerAdapter;
 
 
 public class MainActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {

@@ -11,9 +11,9 @@ import android.widget.GridView;
 
 import com.kidzie.jeff.restclientmanager.Logging;
 import com.kidzie.jeff.restclientmanager.task.TaskConnection;
-import com.mobile.elite.meowmeow.Config;
+import com.mobile.elite.meowmeow.utility.Config;
 import com.mobile.elite.meowmeow.R;
-import com.mobile.elite.meowmeow.VideoDetail;
+import com.mobile.elite.meowmeow.screen.VideoDetail;
 import com.mobile.elite.meowmeow.adapter.video.GridVideoAdapter;
 import com.mobile.elite.meowmeow.listener.ImageClickListener;
 

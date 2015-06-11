@@ -3,18 +3,17 @@ package com.mobile.elite.meowmeow.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.kidzie.jeff.restclientmanager.Logging;
 import com.kidzie.jeff.restclientmanager.task.TaskConnection;
-import com.mobile.elite.meowmeow.Config;
-import com.mobile.elite.meowmeow.ImageDetail;
+import com.mobile.elite.meowmeow.utility.Config;
+import com.mobile.elite.meowmeow.screen.ImageDetail;
 import com.mobile.elite.meowmeow.R;
 import com.mobile.elite.meowmeow.adapter.image.ListImageAdapter;
 import com.mobile.elite.meowmeow.listener.ImageClickListener;
@@ -74,13 +73,6 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
 
     @Override
     public void onImageClick(JSONObject jsData,JSONArray jsonArray, int position) {
-        String url;
-        try {
-            url = jsData.getString("actual_url");
-        } catch (JSONException e) {
-            url = "";
-            e.printStackTrace();
-        }
         Intent intent = new Intent(getActivity(),ImageDetail.class);
         intent.putExtra("position",position);
         intent.putExtra("data", jsonArray.toString());
@@ -94,12 +86,12 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
 
     @Override
     public void onTaskConnectionFailedWithErrorCode(Object tag, int responseCode) {
-        Logging.setLog(Logging.LOGTYPE.info, "Url request image failed with error code", "responseCode=" + responseCode, null);
+
     }
 
     @Override
     public void onTaskRequestSuccess(Object tag, JSONObject response) {
-        Logging.setLog(Logging.LOGTYPE.info,"Url request image success", "response=" + response, null);
+
         try {
             listImageAdapter.add(response.getJSONArray("data"));
 
@@ -111,7 +103,7 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
 
     @Override
     public void onTaskRequestFailed(Object tag, JSONObject response) {
-        Logging.setLog(Logging.LOGTYPE.info, "Url request image failed", "response=" + response, null);
+
     }
 
     @Override
@@ -122,11 +114,7 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if(isLoadMore){
-            Logging.setLog(Logging.LOGTYPE.debug,"scroll","firstItem=" + firstVisibleItem,null);
-            Logging.setLog(Logging.LOGTYPE.debug,"scroll","visibleItem=" + visibleItemCount,null);
-            Logging.setLog(Logging.LOGTYPE.debug,"scroll","totalItemCount=" + totalItemCount,null);
             if(((mPage +1) * limit) - visibleItemCount < visibleItemCount + firstVisibleItem ){
-
                 mPage++;
                 requestImageAPI();
             }

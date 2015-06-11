@@ -1,4 +1,4 @@
-package com.mobile.elite.meowmeow;
+package com.mobile.elite.meowmeow.screen;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.MediaController;
 
 import com.kidzie.jeff.restclientmanager.Logging;
+import com.mobile.elite.meowmeow.R;
 import com.mobile.elite.meowmeow.view.CustomVideoView;
 import com.mobile.elite.meowmeow.view.VideoControllerView;
 

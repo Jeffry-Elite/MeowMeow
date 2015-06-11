@@ -1,4 +1,4 @@
-package com.mobile.elite.meowmeow;
+package com.mobile.elite.meowmeow.screen;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.mobile.elite.meowmeow.R;
 import com.mobile.elite.meowmeow.adapter.image.ImageDetailAdapter;
 
 import org.json.JSONArray;

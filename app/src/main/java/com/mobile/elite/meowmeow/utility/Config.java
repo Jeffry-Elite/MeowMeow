@@ -1,4 +1,4 @@
-package com.mobile.elite.meowmeow;
+package com.mobile.elite.meowmeow.utility;
 
 /**
  * Created by ${Jeffry} on 03-Jun-15.
