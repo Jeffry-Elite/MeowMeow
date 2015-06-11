@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.MediaController;
 
+import com.kidzie.jeff.restclientmanager.Logging;
 import com.mobile.elite.meowmeow.view.CustomVideoView;
 import com.mobile.elite.meowmeow.view.VideoControllerView;
 
@@ -25,7 +26,7 @@ import org.json.JSONException;
 /**
  * Created by Jeffry on 04-Jun-15.
  */
-public class VideoDetail extends Activity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,VideoControllerView.MediaPlayerControl, MediaPlayer.OnCompletionListener {
+public class VideoDetail extends Activity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,MediaPlayer.OnBufferingUpdateListener,VideoControllerView.MediaPlayerControl, MediaPlayer.OnCompletionListener {
 
     private CustomVideoView videoView;
     private ProgressDialog progressDialog;
@@ -78,6 +79,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
             player.setDataSource(this, Uri.parse(videoUrl));
             player.prepareAsync();
             player.setOnPreparedListener(this);
+            player.setOnBufferingUpdateListener(this);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -219,5 +221,10 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
             e.printStackTrace();
         }
         return url_thumb;
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+        Logging.setLog(Logging.LOGTYPE.debug, "buffer", "buffer=" + percent, null);
     }
 }

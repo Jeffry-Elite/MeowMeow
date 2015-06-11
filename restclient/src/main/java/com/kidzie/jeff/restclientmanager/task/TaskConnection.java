@@ -123,7 +123,6 @@ public class TaskConnection extends BaseTask {
             try {
                 response.put("response_code", responseCode);
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             if (mListener != null) mListener.onTaskRequestSuccess(getTag(), response);
