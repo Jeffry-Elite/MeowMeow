@@ -135,5 +135,15 @@
         android:background="@drawable/button_circle_black_transparent"
         android:src="@drawable/ic_arrow_forward_white"/>
 
+    <TextView
+        android:id="@+id/title_video_controller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#CC000000"
+        android:textSize="14sp"
+        android:layout_alignParentTop="true"
+        android:padding="10dp"
+        android:textColor="@android:color/white"/>
+
 
 </RelativeLayout>

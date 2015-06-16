@@ -100,7 +100,9 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
     private ImageButton         mFullscreenButton;
     private ImageView           thumbnail_1;
     private ImageView           thumbnail_2;
+    private TextView            txtTitle;
     private Handler             mHandler = new MessageHandler(this);
+
 
     private static final String BACK_TAG = "back";
     private static final String NEXT_TAG = "next";
@@ -216,6 +218,8 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
         mPrevButton = (ImageButton) v.findViewById(R.id.btn_back);
         mPrevButton.setTag(BACK_TAG);
         mPrevButton.setOnClickListener(this);
+
+        txtTitle = (TextView)v.findViewById(R.id.title_video_controller);
 //        if (mPrevButton != null && !mFromXml && !mListenersSet) {
 //            mPrevButton.setVisibility(View.GONE);
 //        }
@@ -711,5 +715,8 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
 
     public void setEndTime(int duration){
         mEndTime.setText(stringForTime(duration));
+    }
+    public void setTitleVideo(String title){
+        txtTitle.setText(title);
     }
 }

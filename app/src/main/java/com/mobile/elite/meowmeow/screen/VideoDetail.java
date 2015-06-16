@@ -77,6 +77,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         videoSurface.getHolder().setFormat(PixelFormat.TRANSPARENT);
         videoSurface.getHolder().setFormat(PixelFormat.OPAQUE);
         String videoUrl= "";
+
         try {
             // Get data from main menu in video tab
 
@@ -126,6 +127,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         position_thumb_2 = position_thumb_1 == jsData.length() - 1 ? 0 : position_thumb_1 + 1;
         controller.setThumbnail_1(getUrlThumb(position_thumb_1));
         controller.setThumbnail_2(getUrlThumb(position_thumb_2));
+        controller.setTitleVideo(dataParser.getVideoTitle());
         mp.start();
 
     }
