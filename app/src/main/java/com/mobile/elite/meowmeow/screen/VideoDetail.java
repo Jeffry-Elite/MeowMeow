@@ -2,19 +2,18 @@ package com.mobile.elite.meowmeow.screen;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.media.AudioManager;
+import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.MediaController;
+import android.widget.ProgressBar;
 
 import com.kidzie.jeff.restclientmanager.Logging;
 import com.mobile.elite.meowmeow.R;
@@ -30,13 +29,12 @@ import org.json.JSONException;
  */
 public class VideoDetail extends Activity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,MediaPlayer.OnBufferingUpdateListener,VideoControllerView.MediaPlayerControl, MediaPlayer.OnCompletionListener {
 
-    private CustomVideoView videoView;
-    private ProgressDialog progressDialog;
     private MediaPlayer player;
     private SurfaceView videoSurface;
     private VideoControllerView controller;
     private JSONArray jsData;
     private VideoDataParser dataParser;
+    private ProgressBar loadingDialog;
 
     private int mPosition;
     private int NEXT_TAG = 1;
@@ -56,6 +54,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         setContentView(R.layout.video_detail);
         dataParser = new VideoDataParser();
         videoSurface = (SurfaceView) findViewById(R.id.videoSurface);
+        loadingDialog = (ProgressBar)findViewById(R.id.loading_view);
         SurfaceHolder videoHolder = videoSurface.getHolder();
         videoHolder.addCallback(this);
         player = new MediaPlayer();
@@ -70,8 +69,12 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
 
     private void loadVideo(int position) {
+        loadingDialog.setVisibility(View.VISIBLE);
         player.setOnCompletionListener(this);
-
+        controller.setMediaPlayer(this);
+        controller.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
+        videoSurface.getHolder().setFormat(PixelFormat.TRANSPARENT);
+        videoSurface.getHolder().setFormat(PixelFormat.OPAQUE);
         String videoUrl= "";
         try {
             // Get data from main menu in video tab
@@ -81,9 +84,9 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
             videoUrl = dataParser.getUrlVideo(); // Get URL for video
 
             player.setDataSource(this, Uri.parse(videoUrl));
-            player.prepareAsync();
             player.setOnPreparedListener(this);
             player.setOnBufferingUpdateListener(this);
+            player.prepareAsync();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -111,21 +114,34 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        controller.setMediaPlayer(this);
-        controller.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
+        if(loadingDialog.getVisibility() == View.VISIBLE){
+            loadingDialog.setVisibility(View.INVISIBLE);
+        }
+
+        Log.d("On Prepared", "On Prepared");
         int position_thumb_1;
         int position_thumb_2;
         position_thumb_1 = mPosition == jsData.length()-1 ? 0 : mPosition + 1;
         position_thumb_2 = position_thumb_1 == jsData.length() - 1 ? 0 : position_thumb_1 + 1;
         controller.setThumbnail_1(getUrlThumb(position_thumb_1));
         controller.setThumbnail_2(getUrlThumb(position_thumb_2));
-        player.start();
+        mp.start();
 
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+//            loadingDialog.dismiss();
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
-        controller.show();
+        if(!(loadingDialog.getVisibility() == View.VISIBLE))
+            controller.show();
         return false;
     }
 
@@ -195,7 +211,8 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
             mPosition = 0;
         else
             mPosition++;
-
+        controller.setEndTime(0);
+        player.stop();
         player.reset();
 
     }
@@ -206,13 +223,21 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
             mPosition = jsData.length() - 1;
         else
             mPosition--;
-
+        controller.setEndTime(0);
+        player.stop();
         player.reset();
 
     }
 
     @Override
+    protected void onDestroy() {
+        player.release();
+        super.onDestroy();
+    }
+
+    @Override
     public void onCompletion(MediaPlayer mp) {
+        mp.reset();
         loadVideo(mPosition);
 
     }

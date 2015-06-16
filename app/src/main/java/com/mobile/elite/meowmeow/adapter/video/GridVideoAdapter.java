@@ -108,14 +108,14 @@ public class GridVideoAdapter extends BaseAdapter {
             }
         });
 
-        Glide.with(context).load(url)
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        viewHolder.imageHolder.setBackgroundDrawable(new BitmapDrawable(context.getResources(), resource));
-                    }
-                });
+        Glide.with(context).load(url).into(viewHolder.imageHolder);
+//                .asBitmap()
+//                .into(new SimpleTarget<Bitmap>() {
+//                    @Override
+//                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+//                        viewHolder.imageHolder.setBackgroundDrawable(new BitmapDrawable(context.getResources(), resource));
+//                    }
+//                });
 
         return convertView;
     }

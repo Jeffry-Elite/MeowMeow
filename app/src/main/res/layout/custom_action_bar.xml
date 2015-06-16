@@ -17,7 +17,6 @@
         android:background="@drawable/search_btn"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-
         android:padding="5dp"/>
 
 </RelativeLayout>

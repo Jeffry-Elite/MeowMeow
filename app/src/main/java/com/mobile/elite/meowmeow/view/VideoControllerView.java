@@ -708,4 +708,8 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
     public void setThumbnail_2(String url){
         Glide.with(mContext).load(url).centerCrop().into(thumbnail_2);
     }
+
+    public void setEndTime(int duration){
+        mEndTime.setText(stringForTime(duration));
+    }
 }

@@ -18,7 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:gravity="center"
+        android:gravity="center_horizontal"
+        android:singleLine="true"
+        android:maxLength="20"
         android:padding="5dp"
         android:textColor="@android:color/white"/>
 </LinearLayout>

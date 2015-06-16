@@ -27,7 +27,7 @@
         <activity android:name=".screen.ImageDetail"
             android:screenOrientation="portrait"/>
         <activity android:name=".screen.VideoDetail"
-            android:screenOrientation="userLandscape"/>
+            android:screenOrientation="landscape"/>
 
     </application>
 

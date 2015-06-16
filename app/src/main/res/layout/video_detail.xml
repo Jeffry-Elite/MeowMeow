@@ -11,6 +11,14 @@
         <SurfaceView android:id="@+id/videoSurface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <ProgressBar
+            android:id="@+id/loading_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.ProgressBar.Large"
+            android:indeterminate="true"
+            android:layout_gravity="center"
+            android:visibility="visible"/>
 
     </FrameLayout>
 
