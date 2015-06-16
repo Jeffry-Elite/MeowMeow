@@ -30,7 +30,7 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
     private  ListView listView;
     private  ListImageAdapter listImageAdapter;
     private Context context;
-    private int mPage = 0;
+    private int mPage = 1;
     private boolean isLoadMore = true;
     private int limit = 20;
 
@@ -114,7 +114,7 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if(isLoadMore){
-            if(((mPage +1) * limit) - visibleItemCount < visibleItemCount + firstVisibleItem ){
+            if((mPage * limit) - visibleItemCount < visibleItemCount + firstVisibleItem ){
                 mPage++;
                 requestImageAPI();
             }

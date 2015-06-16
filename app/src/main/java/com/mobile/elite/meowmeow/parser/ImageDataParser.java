@@ -21,7 +21,7 @@ public class ImageDataParser {
     public String getUrl(){
         String url = "";
         try {
-            url = getJsData().getString("url");
+            url = getJsData().getString("thumb_url");
         } catch (JSONException e) {
             e.printStackTrace();
         }
