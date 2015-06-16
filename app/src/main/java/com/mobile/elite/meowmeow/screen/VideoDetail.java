@@ -27,7 +27,7 @@ import org.json.JSONException;
 /**
  * Created by Jeffry on 04-Jun-15.
  */
-public class VideoDetail extends Activity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,MediaPlayer.OnBufferingUpdateListener,VideoControllerView.MediaPlayerControl, MediaPlayer.OnCompletionListener {
+public class VideoDetail extends Activity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,MediaPlayer.OnBufferingUpdateListener,VideoControllerView.MediaPlayerControl, MediaPlayer.OnCompletionListener, MediaPlayer.OnInfoListener {
 
     private MediaPlayer player;
     private SurfaceView videoSurface;
@@ -71,6 +71,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
     private void loadVideo(int position) {
         loadingDialog.setVisibility(View.VISIBLE);
         player.setOnCompletionListener(this);
+        player.setOnInfoListener(this);
         controller.setMediaPlayer(this);
         controller.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
         videoSurface.getHolder().setFormat(PixelFormat.TRANSPARENT);
@@ -255,5 +256,20 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
         Logging.setLog(Logging.LOGTYPE.debug, "buffer", "buffer=" + percent, null);
+    }
+
+    @Override
+    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+        switch (what){
+            case MediaPlayer.MEDIA_INFO_BUFFERING_START :
+                if(loadingDialog.getVisibility() != View.VISIBLE)
+                    loadingDialog.setVisibility(View.VISIBLE);
+                break;
+            case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                if(loadingDialog.getVisibility() == View.VISIBLE)
+                    loadingDialog.setVisibility(View.INVISIBLE);
+                break;
+        }
+        return false;
     }
 }
