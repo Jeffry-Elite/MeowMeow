@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mobile.elite.meowmeow.R;
@@ -92,11 +93,15 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
             case 0: {
                 pointerVideo.setVisibility(View.VISIBLE);
                 pointerImage.setVisibility(View.INVISIBLE);
+                txtVideoTitle.setTypeface(arialBold);
+                txtImageTitle.setTypeface(arialType);
             }
             break;
             case 1: {
                 pointerVideo.setVisibility(View.INVISIBLE);
                 pointerImage.setVisibility(View.VISIBLE);
+                txtVideoTitle.setTypeface(arialType);
+                txtImageTitle.setTypeface(arialBold);
             }
             break;
         }

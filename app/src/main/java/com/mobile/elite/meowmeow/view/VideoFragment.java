@@ -29,7 +29,7 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
     private GridView gridView;
     private GridVideoAdapter gridAdapter;
     private boolean isLoadMore = true;
-    private  int mPage = 0;
+    private  int mPage = 1;
     private  int limit = 20;
 
     @Override
@@ -72,7 +72,7 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
     public void onTaskRequestSuccess(Object tag, JSONObject response) {
         try {
             if(response.getJSONArray("data").length() != 0)
-            gridAdapter.add(response.getJSONArray("data"));
+                gridAdapter.add(response.getJSONArray("data"));
             else {
                 isLoadMore = false;
                 return;
@@ -103,15 +103,15 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if(isLoadMore){
-                    Logging.setLog(Logging.LOGTYPE.debug,"scroll","firstItem=" + firstVisibleItem,null);
-                    Logging.setLog(Logging.LOGTYPE.debug,"scroll","visibleItem=" + visibleItemCount,null);
-                    Logging.setLog(Logging.LOGTYPE.debug,"scroll","totalItemCount=" + totalItemCount,null);
-                    if(((mPage +1) * limit) - visibleItemCount < visibleItemCount + firstVisibleItem ){
+        if(isLoadMore){
+            Logging.setLog(Logging.LOGTYPE.debug,"scroll","firstItem=" + firstVisibleItem,null);
+            Logging.setLog(Logging.LOGTYPE.debug,"scroll","visibleItem=" + visibleItemCount,null);
+            Logging.setLog(Logging.LOGTYPE.debug,"scroll","totalItemCount=" + totalItemCount,null);
+            if((mPage * limit) - visibleItemCount < visibleItemCount + firstVisibleItem ){
 
-                        mPage++;
-                        requestVideoApi();
-                    }
-                }
+                mPage++;
+                requestVideoApi();
+            }
+        }
     }
 }
