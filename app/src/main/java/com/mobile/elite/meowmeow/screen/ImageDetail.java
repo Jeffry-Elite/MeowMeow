@@ -8,14 +8,16 @@ import android.widget.ImageButton;
 
 import com.mobile.elite.meowmeow.R;
 import com.mobile.elite.meowmeow.adapter.image.ImageDetailAdapter;
+import com.mobile.elite.meowmeow.listener.ImageClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by ${Jeffry} on 03-Jun-15.
  */
-public class ImageDetail extends Activity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class ImageDetail extends Activity implements View.OnClickListener, ViewPager.OnPageChangeListener, ImageClickListener{
     String url;
     private ViewPager viewPager;
     private ImageDetailAdapter imageAdapter;
@@ -48,6 +50,7 @@ public class ImageDetail extends Activity implements View.OnClickListener, ViewP
         buttonNext.setOnClickListener(this);
         buttonBack.setOnClickListener(this);
         imageAdapter = new ImageDetailAdapter(this,jsArr);
+        imageAdapter.setImageListener(this);
         viewPager.setAdapter(imageAdapter);
         viewPager.setCurrentItem(position);
         viewPager.addOnPageChangeListener(this);
@@ -81,5 +84,16 @@ public class ImageDetail extends Activity implements View.OnClickListener, ViewP
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onImageClick(JSONObject jsData, JSONArray jsArray, int position) {
+        if(buttonBack.getVisibility() == View.VISIBLE){
+            buttonBack.setVisibility(View.INVISIBLE);
+            buttonNext.setVisibility(View.INVISIBLE);
+        } else {
+            buttonBack.setVisibility(View.VISIBLE);
+            buttonNext.setVisibility(View.VISIBLE);
+        }
     }
 }

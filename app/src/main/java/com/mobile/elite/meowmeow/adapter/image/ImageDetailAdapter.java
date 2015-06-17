@@ -12,9 +12,11 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.mobile.elite.meowmeow.R;
+import com.mobile.elite.meowmeow.listener.ImageClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Jeffry on 03-Jun-15.
@@ -24,6 +26,7 @@ public class ImageDetailAdapter extends PagerAdapter {
     private JSONArray jsData = new JSONArray();
     private ViewHolder viewHolder = new ViewHolder();
     private Context context;
+    private ImageClickListener listener;
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
@@ -56,6 +59,14 @@ public class ImageDetailAdapter extends PagerAdapter {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onImageClick(new JSONObject(), jsData, 0);
+                }
+            }
+        });
         Glide.with(context).load(url).into(viewHolder.imageView);
         container.addView(convertView);
         return convertView;
@@ -70,5 +81,10 @@ public class ImageDetailAdapter extends PagerAdapter {
         ImageView imageView;
 
     }
+
+    public void setImageListener(ImageClickListener listener){
+        this.listener = listener;
+    }
+
 
 }
