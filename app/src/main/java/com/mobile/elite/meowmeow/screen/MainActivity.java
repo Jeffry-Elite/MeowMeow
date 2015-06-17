@@ -53,7 +53,7 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
         actionBar.setDisplayShowCustomEnabled(true);
 
         arialType = Typeface.createFromAsset(getAssets(),"fonts/arial.ttf");
-        arialBold = Typeface.createFromAsset(getAssets(),"fonts/arial_bold.ttf");
+        arialBold = Typeface.createFromAsset(getAssets(),"fonts/arialbd.ttf");
 
         txtVideoTitle.setTypeface(arialType);
         txtImageTitle.setTypeface(arialType);
