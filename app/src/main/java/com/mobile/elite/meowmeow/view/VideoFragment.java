@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import com.kidzie.jeff.restclientmanager.Logging;
 import com.kidzie.jeff.restclientmanager.task.TaskConnection;
@@ -31,6 +32,7 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
     private boolean isLoadMore = true;
     private  int mPage = 1;
     private  int limit = 20;
+    private ProgressBar loading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
 
     private void initView() {
         gridView = (GridView)getActivity().findViewById(R.id.grid_image);
+        loading = (ProgressBar)getActivity().findViewById(R.id.loading);
         gridAdapter = new GridVideoAdapter(getActivity(), new JSONArray(),this);
         gridView.setAdapter(gridAdapter);
         gridView.setOnScrollListener(this);
@@ -60,16 +63,23 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
 
     @Override
     public void onPreExecute() {
-
+       if(!isLoadingShowing()){
+            loading.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onTaskConnectionFailedWithErrorCode(Object tag, int responseCode) {
-
+        if(isLoadingShowing()){
+            loading.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
     public void onTaskRequestSuccess(Object tag, JSONObject response) {
+        if(isLoadingShowing()){
+            loading.setVisibility(View.INVISIBLE);
+        }
         try {
             if(response.getJSONArray("data").length() != 0)
                 gridAdapter.add(response.getJSONArray("data"));
@@ -85,13 +95,15 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
 
     @Override
     public void onTaskRequestFailed(Object tag, JSONObject response) {
-
+        if(isLoadingShowing()){
+            loading.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
     public void onImageClick(JSONObject jsData, JSONArray jsArray, int position) {
         Intent intent = new Intent(getActivity(), VideoDetail.class);
-        intent.putExtra("data",jsArray.toString());
+        intent.putExtra("data", jsArray.toString());
         intent.putExtra("position", position);
         getActivity().startActivity(intent);
     }
@@ -113,5 +125,9 @@ public class VideoFragment extends Fragment implements TaskConnection.TaskConnec
                 requestVideoApi();
             }
         }
+    }
+
+    private boolean isLoadingShowing(){
+        return loading.getVisibility() == View.VISIBLE;
     }
 }

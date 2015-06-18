@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.kidzie.jeff.restclientmanager.task.TaskConnection;
 import com.mobile.elite.meowmeow.utility.Config;
@@ -33,6 +34,7 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
     private int mPage = 1;
     private boolean isLoadMore = true;
     private int limit = 20;
+    private ProgressBar loading;
 
     @Override
     public void onAttach(Activity activity) {
@@ -52,6 +54,7 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
 
     private void initView() {
         listView = (ListView)getActivity().findViewById(R.id.list_picture);
+        loading = (ProgressBar)getActivity().findViewById(R.id.loading);
         listImageAdapter = new ListImageAdapter(getActivity(), new JSONArray(), this);
         listView.setAdapter(listImageAdapter);
         listView.setOnScrollListener(this);
@@ -81,17 +84,23 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
 
     @Override
     public void onPreExecute() {
-
+//        if(!isLoadingShowing()){
+//            loading.setVisibility(View.VISIBLE);
+//        }
     }
 
     @Override
     public void onTaskConnectionFailedWithErrorCode(Object tag, int responseCode) {
-
+        if(isLoadingShowing()){
+            loading.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
     public void onTaskRequestSuccess(Object tag, JSONObject response) {
-
+        if(isLoadingShowing()){
+            loading.setVisibility(View.INVISIBLE);
+        }
         try {
             listImageAdapter.add(response.getJSONArray("data"));
 
@@ -103,7 +112,9 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
 
     @Override
     public void onTaskRequestFailed(Object tag, JSONObject response) {
-
+        if(isLoadingShowing()){
+            loading.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -119,5 +130,9 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
                 requestImageAPI();
             }
         }
+    }
+
+    private boolean isLoadingShowing(){
+        return loading.getVisibility() == View.VISIBLE;
     }
 }

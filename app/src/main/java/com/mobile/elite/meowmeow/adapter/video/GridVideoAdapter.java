@@ -108,7 +108,7 @@ public class GridVideoAdapter extends BaseAdapter {
             }
         });
 
-        Glide.with(context).load(url).into(viewHolder.imageHolder);
+        Glide.with(context).load(url).placeholder(R.drawable.icon).into(viewHolder.imageHolder);
 //                .asBitmap()
 //                .into(new SimpleTarget<Bitmap>() {
 //                    @Override
