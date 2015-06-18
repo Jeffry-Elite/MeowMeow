@@ -106,6 +106,7 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
 
     private static final String BACK_TAG = "back";
     private static final String NEXT_TAG = "next";
+    private static final String NEXT_2_TAG = "next 2";
 
     private ImageButton btnNext;
     private ImageButton btnBack;
@@ -225,7 +226,11 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
 //        }
 
         thumbnail_1 = (ImageView)v.findViewById(R.id.thumbnail_1);
+        thumbnail_1.setTag(NEXT_TAG);
+        thumbnail_1.setOnClickListener(this);
         thumbnail_2 = (ImageView)v.findViewById(R.id.thumbnail_2);
+        thumbnail_2.setTag(NEXT_2_TAG);
+        thumbnail_2.setOnClickListener(this);
         mProgress = (SeekBar) v.findViewById(R.id.mediacontroller_progress);
         if (mProgress != null) {
             if (mProgress instanceof SeekBar) {
@@ -657,6 +662,8 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
             mPlayer.back();
         else if (v.getTag().equals(NEXT_TAG))
             mPlayer.next();
+        else if(v.getTag().equals(NEXT_2_TAG))
+            mPlayer.next_2_video();
     }
 
     public interface MediaPlayerControl {
@@ -674,6 +681,7 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
         void    toggleFullScreen();
         void    next();
         void    back();
+        void    next_2_video();
     }
 
     private static class MessageHandler extends Handler {

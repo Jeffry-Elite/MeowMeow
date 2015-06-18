@@ -44,6 +44,9 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
     private String url_thumb_1;
     private String url_thumb_2;
+
+    int position_thumb_1;
+    int position_thumb_2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -126,8 +129,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         }
 
         Log.d("On Prepared", "On Prepared");
-        int position_thumb_1;
-        int position_thumb_2;
+
         position_thumb_1 = mPosition == jsData.length()-1 ? 0 : mPosition + 1;
         position_thumb_2 = position_thumb_1 == jsData.length() - 1 ? 0 : position_thumb_1 + 1;
         controller.setThumbnail_1(getUrlThumb(position_thumb_1));
@@ -235,6 +237,13 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         player.stop();
         player.reset();
 
+    }
+    @Override
+    public void next_2_video(){
+        mPosition = position_thumb_2;
+        controller.setEndTime(0);
+        player.stop();
+        player.reset();
     }
 
     @Override
