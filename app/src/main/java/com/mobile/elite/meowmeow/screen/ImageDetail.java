@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import com.mobile.elite.meowmeow.R;
@@ -28,6 +30,9 @@ public class ImageDetail extends Activity implements View.OnClickListener, ViewP
 
     @Override
     protected void onCreate(Bundle bundle) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(bundle);
         initView();
     }

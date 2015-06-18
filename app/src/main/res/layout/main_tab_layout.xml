@@ -24,7 +24,7 @@
         <View
             android:id="@+id/pointer_video"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="5dp"
             android:background="#fbf202"
             android:visibility="invisible"/>
     </LinearLayout>
@@ -48,7 +48,7 @@
         <View
             android:id="@+id/pointer_picture"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="5dp"
             android:layout_marginBottom="0dp"
             android:background="#fbf202"
             android:visibility="invisible"/>
