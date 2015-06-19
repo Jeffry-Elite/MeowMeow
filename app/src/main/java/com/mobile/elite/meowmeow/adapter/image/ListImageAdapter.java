@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -30,6 +32,8 @@ public class ListImageAdapter extends BaseAdapter {
     private ImageClickListener listener;
     private ArrayList<JSONObject> list = new ArrayList<JSONObject>();
     private ImageDataParser dataParser;
+    private float ROTATE_FROM = 0.0f;
+    private float ROTATE_TO = 360.0f;
 
     public ListImageAdapter(Context context, JSONArray jsArray, ImageClickListener listener) {
         super();
@@ -77,10 +81,17 @@ public class ListImageAdapter extends BaseAdapter {
            convertView = inflater.inflate(R.layout.item_meow_list, null);
             viewHolder = new ViewHolder();
             viewHolder.imageHolder = (ImageView)convertView.findViewById(R.id.image_meow);
+            viewHolder.loadingHolder = (ImageView)convertView.findViewById(R.id.loading);
             convertView.setTag(viewHolder);
         } else {
            viewHolder = (ViewHolder)convertView.getTag();
         }
+
+        RotateAnimation r; // = new RotateAnimation(ROTATE_FROM, ROTATE_TO);
+        r = new RotateAnimation(ROTATE_FROM, ROTATE_TO, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        r.setDuration((long) 2*1500);
+        r.setRepeatCount(Animation.INFINITE);
+        viewHolder.loadingHolder.startAnimation(r);
        dataParser.setJsData(list.get(position));
        String url = dataParser.getUrl();
         viewHolder.imageHolder.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +120,7 @@ public class ListImageAdapter extends BaseAdapter {
 
     private static class ViewHolder{
         ImageView imageHolder;
+        ImageView loadingHolder;
     }
 
 }
