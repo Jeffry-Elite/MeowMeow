@@ -5,13 +5,19 @@
     android:orientation="vertical"
     android:background="@color/global_background">
 
-    <ImageView
-        android:id="@+id/image_video"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_3">
+        <ImageView
+            android:id="@+id/image_video"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:scaleType="fitXY"
+
+            android:adjustViewBounds="true"
+            />
+
     <TextView
         android:id="@+id/txt_title_video"
         android:background="@color/text_shadow_background"
@@ -22,5 +28,10 @@
         android:singleLine="true"
         android:maxLength="20"
         android:padding="5dp"
+        android:layout_gravity="top"
         android:textColor="@android:color/white"/>
+
+
+
+    </FrameLayout>
 </LinearLayout>
