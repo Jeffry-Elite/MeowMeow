@@ -31,6 +31,7 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
     private  ListView listView;
     private  ListImageAdapter listImageAdapter;
     private Context context;
+    private Activity act;
     private int mPage = 1;
     private boolean isLoadMore = true;
     private int limit = 20;
@@ -40,6 +41,7 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         context = activity;
+        act = activity;
     }
 
     @Override
@@ -54,7 +56,7 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
 
     private void initView() {
         listView = (ListView)getActivity().findViewById(R.id.list_picture);
-        loading = (ProgressBar)getActivity().findViewById(R.id.loading);
+        loading = (ProgressBar)act.findViewById(R.id.loading);
         listImageAdapter = new ListImageAdapter(getActivity(), new JSONArray(), this);
         listView.setAdapter(listImageAdapter);
         listView.setOnScrollListener(this);
@@ -84,9 +86,9 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
 
     @Override
     public void onPreExecute() {
-//        if(!isLoadingShowing()){
-//            loading.setVisibility(View.VISIBLE);
-//        }
+        if(!isLoadingShowing()){
+            loading.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

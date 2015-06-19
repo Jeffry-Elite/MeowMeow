@@ -5,6 +5,8 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,6 +29,8 @@ public class ImageDetailAdapter extends PagerAdapter {
     private ViewHolder viewHolder = new ViewHolder();
     private Context context;
     private ImageClickListener listener;
+    private float ROTATE_FROM = 0.0f;
+    private float ROTATE_TO = 360.0f;
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
@@ -53,7 +57,13 @@ public class ImageDetailAdapter extends PagerAdapter {
         View convertView = inflater.inflate(R.layout.image_detail_activity, null);
         viewHolder = new ViewHolder();
         viewHolder.imageView = (ImageView)convertView.findViewById(R.id.image_detail);
+        viewHolder.imageLoading = (ImageView)convertView.findViewById(R.id.loading);
         String url = null;
+        RotateAnimation r; // = new RotateAnimation(ROTATE_FROM, ROTATE_TO);
+        r = new RotateAnimation(ROTATE_FROM, ROTATE_TO, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        r.setDuration((long) 2*1500);
+        r.setRepeatCount(Animation.INFINITE);
+        viewHolder.imageLoading.startAnimation(r);
         try {
             url = jsData.getJSONObject(position).getString("actual_url");
         } catch (JSONException e) {
@@ -79,6 +89,7 @@ public class ImageDetailAdapter extends PagerAdapter {
 
     private static class ViewHolder{
         ImageView imageView;
+        ImageView imageLoading;
 
     }
 
