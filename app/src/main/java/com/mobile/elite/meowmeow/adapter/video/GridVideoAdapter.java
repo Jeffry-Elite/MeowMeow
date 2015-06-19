@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +39,9 @@ public class GridVideoAdapter extends BaseAdapter {
     private ImageClickListener listener;
     private List<JSONObject> list = new ArrayList<JSONObject>();
     private VideoDataParser dataParser;
+
+    private float ROTATE_FROM = 0.0f;
+    private float ROTATE_TO = 360.0f;
 
     public GridVideoAdapter(Context context, JSONArray jsData,ImageClickListener listener) {
         this.context = context;
@@ -85,6 +90,7 @@ public class GridVideoAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.imageHolder = (ImageView)convertView.findViewById(R.id.image_video);
             viewHolder.textHolder = (TextView)convertView.findViewById(R.id.txt_title_video);
+            viewHolder.loadingHolder = (ImageView)convertView.findViewById(R.id.loading);
             typeface = Typeface.createFromAsset(context.getAssets(),"fonts/arial.ttf");
             viewHolder.textHolder.setTypeface(typeface);
 
@@ -92,6 +98,13 @@ public class GridVideoAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
+
+
+        RotateAnimation r; // = new RotateAnimation(ROTATE_FROM, ROTATE_TO);
+        r = new RotateAnimation(ROTATE_FROM, ROTATE_TO, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        r.setDuration((long) 2*1500);
+        r.setRepeatCount(Animation.INFINITE);
+        viewHolder.loadingHolder.startAnimation(r);
         dataParser.setJsData(list.get(position));
         String url = dataParser.getUrlImageVideo();
         String title = dataParser.getVideoTitle();
@@ -108,7 +121,7 @@ public class GridVideoAdapter extends BaseAdapter {
             }
         });
 
-        Glide.with(context).load(url).placeholder(R.drawable.icon).into(viewHolder.imageHolder);
+        Glide.with(context).load(url).into(viewHolder.imageHolder);
 //                .asBitmap()
 //                .into(new SimpleTarget<Bitmap>() {
 //                    @Override
@@ -136,5 +149,6 @@ public class GridVideoAdapter extends BaseAdapter {
     private class ViewHolder{
         ImageView imageHolder;
         TextView textHolder;
+        ImageView loadingHolder;
     }
 }
