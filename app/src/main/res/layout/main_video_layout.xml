@@ -6,7 +6,9 @@
         android:id="@+id/grid_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="2">
+        android:layout_margin="10dp"
+        android:numColumns="2"
+        >
 
     </GridView>
 

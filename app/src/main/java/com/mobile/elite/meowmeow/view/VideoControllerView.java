@@ -226,11 +226,9 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
 //        }
 
         thumbnail_1 = (ImageView)v.findViewById(R.id.thumbnail_1);
-        thumbnail_1.setTag(NEXT_TAG);
-        thumbnail_1.setOnClickListener(this);
+        thumbnail_1.setOnClickListener(thumbnail_1_onClick);
         thumbnail_2 = (ImageView)v.findViewById(R.id.thumbnail_2);
-        thumbnail_2.setTag(NEXT_2_TAG);
-        thumbnail_2.setOnClickListener(this);
+        thumbnail_2.setOnClickListener(thumbnail_2_onClick);
         mProgress = (SeekBar) v.findViewById(R.id.mediacontroller_progress);
         if (mProgress != null) {
             if (mProgress instanceof SeekBar) {
@@ -384,6 +382,9 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(mShowing){
+            hide();
+        } else
         show(sDefaultTimeout);
         return true;
     }
@@ -457,6 +458,22 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
             doToggleFullscreen();
             show(sDefaultTimeout);
         }
+    };
+
+    private View.OnClickListener thumbnail_1_onClick = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            mPlayer.next();
+        }
+    };
+
+    private View.OnClickListener thumbnail_2_onClick = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            mPlayer.next_2_video();
+        };
     };
 
     public void updatePausePlay() {

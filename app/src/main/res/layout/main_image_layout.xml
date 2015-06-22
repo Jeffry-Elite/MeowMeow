@@ -19,6 +19,6 @@
         style="@android:style/Widget.ProgressBar.Inverse"
         android:layout_gravity="center"
         android:indeterminate="true"
-        android:visibility="invisible"/>
+        android:visibility="visible"/>
 
 </FrameLayout>
