@@ -56,7 +56,7 @@ public class ImageFragment extends Fragment implements ImageClickListener, TaskC
 
     private void initView() {
         listView = (ListView)getActivity().findViewById(R.id.list_picture);
-        loading = (ProgressBar)getActivity().findViewById(R.id.loading);
+        loading = (ProgressBar)getActivity().findViewById(R.id.loading_image_more);
         listImageAdapter = new ListImageAdapter(getActivity(), new JSONArray(), this);
         listView.setAdapter(listImageAdapter);
         listView.setOnScrollListener(this);

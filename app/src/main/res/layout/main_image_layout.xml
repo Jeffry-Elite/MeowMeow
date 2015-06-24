@@ -13,12 +13,12 @@
     </ListView>
 
     <ProgressBar
-        android:id="@+id/loading"
+        android:id="@+id/loading_image_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@android:style/Widget.ProgressBar.Inverse"
         android:layout_gravity="center"
         android:indeterminate="true"
-        android:visibility="visible"/>
+        />
 
 </FrameLayout>
