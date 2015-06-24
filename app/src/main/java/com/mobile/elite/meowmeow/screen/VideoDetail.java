@@ -130,7 +130,8 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         if(loadingDialog.getVisibility() == View.VISIBLE){
             loadingDialog.setVisibility(View.INVISIBLE);
         }
-
+        if(controller.isShowing())
+            controller.hide();
         Log.d("On Prepared", "On Prepared");
 
         position_thumb_1 = mPosition == jsData.length()-1 ? 0 : mPosition + 1;
@@ -227,8 +228,8 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         controller.setEndTime(0);
         player.stop();
         player.reset();
-        if(controller.isShowing())
-            controller.hide();
+//        if(controller.isShowing())
+//            controller.hide();
 
     }
 
@@ -241,8 +242,8 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         controller.setEndTime(0);
         player.stop();
         player.reset();
-        if(controller.isShowing())
-            controller.hide();
+//        if(controller.isShowing())
+//            controller.hide();
 
     }
     @Override
@@ -252,8 +253,8 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         controller.setEndTime(0);
         player.stop();
         player.reset();
-        if(controller.isShowing())
-            controller.hide();
+//        if(controller.isShowing())
+//            controller.hide();
     }
 
     @Override
