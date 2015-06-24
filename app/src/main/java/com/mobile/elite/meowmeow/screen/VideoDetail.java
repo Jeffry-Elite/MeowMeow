@@ -67,6 +67,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         videoHolder.addCallback(this);
         player = new MediaPlayer();
         controller = new VideoControllerView(this);
+
         try {
             jsData = new JSONArray(getIntent().getStringExtra("data")); // get all for video
         } catch (JSONException e) {
@@ -77,11 +78,12 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
 
     private void loadVideo(int position) {
+        controller.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
         loadingDialog.setVisibility(View.VISIBLE);
         player.setOnCompletionListener(this);
         player.setOnInfoListener(this);
         controller.setMediaPlayer(this);
-        controller.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
+
         videoSurface.getHolder().setFormat(PixelFormat.TRANSPARENT);
         videoSurface.getHolder().setFormat(PixelFormat.OPAQUE);
         String videoUrl= "";
@@ -109,6 +111,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         player.setDisplay(holder);
+
 
     }
 
@@ -150,7 +153,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(!(loadingDialog.getVisibility() == View.VISIBLE))
+        if(loadingDialog.getVisibility() != View.VISIBLE && !controller.isShowing())
             controller.show();
         return false;
     }
@@ -224,6 +227,8 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         controller.setEndTime(0);
         player.stop();
         player.reset();
+        if(controller.isShowing())
+            controller.hide();
 
     }
 
@@ -236,14 +241,19 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
         controller.setEndTime(0);
         player.stop();
         player.reset();
+        if(controller.isShowing())
+            controller.hide();
 
     }
     @Override
     public void next_2_video(){
+
         mPosition = position_thumb_2;
         controller.setEndTime(0);
         player.stop();
         player.reset();
+        if(controller.isShowing())
+            controller.hide();
     }
 
     @Override

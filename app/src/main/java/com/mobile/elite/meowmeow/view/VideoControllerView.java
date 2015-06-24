@@ -251,7 +251,7 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
      * automatically after 3 seconds of inactivity.
      */
     public void show() {
-        show(sDefaultTimeout);
+        show(0);
     }
 
     /**
@@ -382,10 +382,10 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(mShowing){
+        if(mShowing)
             hide();
-        } else
-        show(sDefaultTimeout);
+//        } else
+//        show(sDefaultTimeout);
         return true;
     }
 
@@ -464,6 +464,7 @@ public class VideoControllerView extends FrameLayout implements View.OnClickList
 
         @Override
         public void onClick(View v) {
+
             mPlayer.next();
         }
     };
