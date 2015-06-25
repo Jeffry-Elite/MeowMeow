@@ -41,6 +41,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
     private int mPosition;
     private int NEXT_TAG = 1;
     private int BACK_TAG = 2;
+    private boolean isCanNextOrBack = true;
 
     private String url_thumb_1;
     private String url_thumb_2;
@@ -127,6 +128,7 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
     @Override
     public void onPrepared(MediaPlayer mp) {
+        isCanNextOrBack = true;
         if(loadingDialog.getVisibility() == View.VISIBLE){
             loadingDialog.setVisibility(View.INVISIBLE);
         }
@@ -221,10 +223,14 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
     @Override
     public void next() {
+        if(!isCanNextOrBack)
+            return;
         if(mPosition == jsData.length() - 1)
             mPosition = 0;
         else
             mPosition++;
+
+        isCanNextOrBack = false;
         controller.setEndTime(0);
         player.stop();
         player.reset();
@@ -235,10 +241,14 @@ public class VideoDetail extends Activity implements SurfaceHolder.Callback, Med
 
     @Override
     public void back() {
+        if(!isCanNextOrBack)
+            return;
         if(mPosition == 0)
             mPosition = jsData.length() - 1;
         else
             mPosition--;
+
+        isCanNextOrBack = false;
         controller.setEndTime(0);
         player.stop();
         player.reset();
